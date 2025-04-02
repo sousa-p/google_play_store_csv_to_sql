@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def clean_size(size):
+def clean_app_size(size):
     if pd.isna(size):
         return None
     size = size.strip()
