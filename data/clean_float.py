@@ -2,11 +2,11 @@ import pandas as pd
 import re
 
 
-def clean_float(value):
-    if pd.isna(value):
-        return None
+def clean_float(rating):
     try:
-        value = re.sub(r"[,+]", "", str(value))
-        return float(value)
+        value = float(rating) if pd.notna(rating) and str(rating).replace('.', '', 1).isdigit() else None
+        if value is None or (value < 0 or value > 5):
+            return 0
+        return value
     except ValueError:
-        return None
+        return 0

@@ -18,7 +18,7 @@ def main():
             progress.update(clean_task, advance=1)
 
         if "Reviews" in df.columns:
-            df["Reviews"] = df["Reviews"].apply(lambda x: int(x) if pd.notna(x) and str(x).isdigit() else None)
+            df["Reviews"] = df["Reviews"].apply(lambda x: int(x) if pd.notna(x) and str(x).isdigit() else 0)
             progress.update(clean_task, advance=1)
 
         if "Rating" in df.columns:
@@ -36,23 +36,29 @@ def main():
         if "Last Updated" in df.columns:
             df["Last Updated"] = df["Last Updated"].apply(clean_date)
             progress.update(clean_task, advance=1)
-    
+
+    with Progress() as progress:
+        # Exportar para CSV
+        export_csv_task = progress.add_task("[cyan]Exporting to CSV", total=1)
+        df.to_csv("output/googleplaystore_cleaned.csv", index=False, encoding="utf-8")
+        progress.update(export_csv_task, advance=1)
+
     with Progress() as progress:
         create_table_task = progress.add_task("[cyan]Create table STM", total=13)
         columns = {
-            "App": "VARCHAR(255)",
-            "Category": "VARCHAR(100)",
-            "Rating": "FLOAT",
-            "Reviews": "INT",
-            "Size": "FLOAT",
-            "Installs": "INT",
-            "Type": "VARCHAR(20)",
-            "Price": "FLOAT",
-            "Content Rating": "VARCHAR(50)",
-            "Genres": "VARCHAR(100)",
-            "Last Updated": "DATE",
-            "Current Ver": "VARCHAR(50)",
-            "Android Ver": "VARCHAR(50)"
+            "App": "VARCHAR(255) NULL",
+            "Category": "VARCHAR(100) NULL",
+            "Rating": "FLOAT NULL",
+            "Reviews": "INT NULL",
+            "Size": "FLOAT NULL",
+            "Installs": "INT NULL",
+            "Type": "VARCHAR(20) NULL",
+            "Price": "FLOAT NULL",
+            "Content Rating": "VARCHAR(50) NULL",
+            "Genres": "VARCHAR(100) NULL",
+            "Last Updated": "DATE NULL",
+            "Current Ver": "VARCHAR(50) NULL",
+            "Android Ver": "VARCHAR(50) NULL"
         }
 
         create_table = "CREATE TABLE googleplaystore (\n"
@@ -84,15 +90,15 @@ def main():
         insert_statements += ";"
 
     with Progress() as progress:
-        write_document_task = progress.add_task("[cyan]Wrinting document", total=2)
-        with open("output//googleplaystore.sql", "w", encoding="utf-8") as f:
+        write_document_task = progress.add_task("[cyan]Writing document", total=2)
+        with open("output/googleplaystore.sql", "w", encoding="utf-8") as f:
             f.write("-- CREATE TABLE\n")
             f.write(create_table + "\n")
             f.write("-- INSERTS\n")
             progress.update(write_document_task, advance=1)
             f.write(insert_statements + "\n")
             progress.update(write_document_task, advance=1)
-    print('Created output//googleplaystore.sql')
+    print('Created output/googleplaystore_cleaned.csv and output/googleplaystore.sql')
 
 
 if __name__ == '__main__':

@@ -3,10 +3,10 @@ import pandas as pd
 
 def clean_app_size(size):
     if pd.isna(size):
-        return None
+        return 0
     size = size.strip()
     if size.lower() == "varies with device":
-        return None
+        return -1
 
     multiplier = 1
     if "M" in size:
@@ -18,4 +18,4 @@ def clean_app_size(size):
     try:
         return float(size) * multiplier
     except ValueError:
-        return None
+        return 0
