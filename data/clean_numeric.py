@@ -3,7 +3,6 @@ import re
 
 
 def clean_numeric(value):
-    """Remove vírgulas, sinais de '+' e converte para inteiro."""
     if pd.isna(value):
         return None
     
