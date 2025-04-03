@@ -38,7 +38,6 @@ def main():
             progress.update(clean_task, advance=1)
 
     with Progress() as progress:
-        # Exportar para CSV
         export_csv_task = progress.add_task("[cyan]Exporting to CSV", total=1)
         df.to_csv("output/googleplaystore_cleaned.csv", index=False, encoding="utf-8")
         progress.update(export_csv_task, advance=1)
@@ -50,7 +49,7 @@ def main():
             "Category": "VARCHAR(100) NULL",
             "Rating": "FLOAT NULL",
             "Reviews": "INT NULL",
-            "Size": "FLOAT NULL",
+            "Size": "INT NULL",
             "Installs": "INT NULL",
             "Type": "VARCHAR(20) NULL",
             "Price": "FLOAT NULL",

@@ -11,11 +11,10 @@ def clean_app_size(size):
     multiplier = 1
     if "M" in size:
         size = size.replace("M", "")
-        multiplier = 1
+        multiplier = 1024
     elif "k" in size:
         size = size.replace("k", "")
-        multiplier = 1/1024
     try:
-        return float(size) * multiplier
+        return int(float(size) * multiplier)
     except ValueError:
         return 0
